@@ -4,8 +4,10 @@ fn connect_src(csp: csp_json::CspJson) -> String {
     let mut connect_src = String::from("connect-src:");
 
     for domain in csp.domains {
-        connect_src.push_str(" ");
-        connect_src.push_str(domain.domain.as_str());
+        if domain.directive.connect_src {
+            connect_src.push_str(" ");
+            connect_src.push_str(domain.domain.as_str());
+        }
     }
 
     connect_src.push_str(";");

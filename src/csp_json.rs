@@ -1,49 +1,21 @@
 use crate::csp_item;
-use crate::csp_directive;
+extern crate serde_json;
 
-fn 
+#[derive(Serialize, Deserialize)]
+pub struct CspJson {
+    domains: Vec<csp_item::CspItem>
+}
 
-pub fn json_to_csp(json: String) -> Vec<csp_item::CspItem> {
-    let mut collection: Vec<csp_item::CspItem> = Vec::new();
+pub fn json_to_csp(json: &str) -> Option<CspJson> {    
+    let result = serde_json::from_str(json);
 
-    let directive = csp_directive::CspDirective{
-        connect_src: true,
-        script_src: false,
-        img_src: false,
-        style_src: true,
-        object_src: true,
-        frame_src: true,
-        media_src: false,
-        script_src_elem: true,
-        worker_src: false
-    };
+    if !result.is_err() {
+        let parsed: CspJson = result.unwrap();
 
-    let directive_two = csp_directive::CspDirective{
-        connect_src: true,
-        script_src: false,
-        img_src: false,
-        style_src: true,
-        object_src: true,
-        frame_src: true,
-        media_src: false,
-        script_src_elem: true,
-        worker_src: false
-    };
+        return Some(parsed);
+    }
 
-    let item = csp_item::CspItem{
-        domain: String::from("example.com"),
-        directive: directive
-    };
-
-    let item_two = csp_item::CspItem{
-        domain: String::from("test.com"),
-        directive: directive_two
-    };
-
-    collection.push(item);
-    collection.push(item_two);
-
-    return collection;
+    return None;
 }
 
 #[cfg(test)]
@@ -52,14 +24,28 @@ mod csp_json_test {
     fn test_json_to_csp() {
         let json = r#"
             {
-                "example.com": {true, false},
-                "test.com": {false, false, true}
+                "domains": [
+                    {"domain": "example.com", "directive": {"connect_src": true, "script_src": false, "img_src": false, "style_src": true, "object_src": true, "frame_src": false, "media_src": true, "script_src_elem": false, "worker_src": true}},
+                    {"domain": "test.com", "directive": {"connect_src": true, "script_src": true, "img_src": false, "style_src": false, "object_src": true, "frame_src": true, "media_src": true, "script_src_elem": true, "worker_src": true}}
+                ]
             }
         "#;
 
-        let collection = super::json_to_csp(String::from(json));
+        let result = super::json_to_csp(json);
 
-        assert_eq!(collection[0].domain, "example.com");
-        assert_eq!(collection[1].domain, "test.com");
+        let domains = result.unwrap(); 
+
+        assert_eq!(domains.domains[0].domain, "example.com");
+        assert_eq!(domains.domains[1].domain, "test.com");
+        assert!(domains.domains[1].directive.script_src);
+    }
+
+    #[test]
+    fn test_json_to_csp_empty() {
+        let json = r#""#;
+
+        let domains = super::json_to_csp(json);
+
+        assert!(domains.is_none());
     }
 }

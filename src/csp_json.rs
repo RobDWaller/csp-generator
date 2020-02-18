@@ -3,7 +3,7 @@ extern crate serde_json;
 
 #[derive(Serialize, Deserialize)]
 pub struct CspJson {
-    domains: Vec<csp_item::CspItem>
+    pub domains: Vec<csp_item::CspItem>
 }
 
 pub fn json_to_csp(json: &str) -> Option<CspJson> {    

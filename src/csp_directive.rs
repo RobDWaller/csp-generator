@@ -1,3 +1,4 @@
+#[derive(Serialize, Deserialize)]
 pub struct CspDirective{
     pub connect_src: bool,
     pub script_src: bool,

@@ -1,38 +1,32 @@
 use crate::csp_json;
 
-fn connect_src(csp: csp_json::CspJson) -> String {
-    let mut connect_src = String::from("connect-src:");
+fn directive_line(directive: &str, csp: csp_json::CspJson) -> String {
+    let mut directive_line: String = directive.to_string();
+    directive_line.push_str(":");
 
     for domain in csp.domains {
-        if domain.directive.connect_src {
-            connect_src.push_str(" ");
-            connect_src.push_str(domain.domain.as_str());
+        if domain.directive.contains(&directive.to_string()) {
+            directive_line.push_str(" ");
+            directive_line.push_str(domain.domain.as_str());
         }
     }
 
-    connect_src.push_str(";");
-    return connect_src;
+    directive_line.push_str(";");
+    return directive_line;
 }
 
 #[cfg(test)]
 mod csp_string_test {
     use crate::csp_item;
-    use crate::csp_directive;
     use crate::csp_json;
 
     #[test]
-    fn test_connect_src() {
-        let directive = csp_directive::CspDirective{
-            connect_src: true,
-            script_src: false,
-            img_src: true,
-            style_src: false,
-            object_src: true,
-            frame_src: false,
-            media_src: true,
-            script_src_elem: false,
-            worker_src: true
-        };
+    fn test_directive_line() {
+
+        let directive: Vec<String> = vec![
+            String::from("connect-src"),
+            String::from("script-src")
+        ];
 
         let item = csp_item::CspItem{
             domain: String::from("*.example.com"),
@@ -46,7 +40,7 @@ mod csp_string_test {
             domains: domains
         };
 
-        let connect_src: String = super::connect_src(json);
+        let connect_src: String = super::directive_line("connect-src", json);
 
         assert_eq!(connect_src, String::from("connect-src: *.example.com;"));
     }

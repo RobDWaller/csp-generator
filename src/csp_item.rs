@@ -1,26 +1,20 @@
-use crate::csp_directive;
+//use crate::csp_directive;
 
 #[derive(Serialize, Deserialize)]
 pub struct CspItem{
     pub domain: String,
-    pub directive: csp_directive::CspDirective
+    //pub directive: csp_directive::CspDirective
+    pub directive: Vec<String>
 }
 
 #[cfg(test)]
 mod csp_item_test {
     #[test]
     fn test_csp_item_struct() {
-        let directive = super::csp_directive::CspDirective{
-            connect_src: true,
-            script_src: false,
-            img_src: false,
-            style_src: true,
-            object_src: true,
-            frame_src: true,
-            media_src: false,
-            script_src_elem: true,
-            worker_src: false
-        };
+        let directive: Vec<String> = vec![
+            String::from("connect-src"),
+            String::from("script-src")
+        ];
 
         let item = super::CspItem{
             domain: String::from("*.example.com"),
@@ -28,6 +22,6 @@ mod csp_item_test {
         };
 
         assert_eq!(item.domain, "*.example.com");
-        assert!(item.directive.style_src);
+        assert_eq!(item.directive[1], "script-src");
     }
 }

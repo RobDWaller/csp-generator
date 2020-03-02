@@ -1,9 +1,6 @@
-//use crate::csp_directive;
-
 #[derive(Serialize, Deserialize)]
 pub struct CspItem{
     pub domain: String,
-    //pub directive: csp_directive::CspDirective
     pub directive: Vec<String>
 }
 

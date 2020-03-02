@@ -19,7 +19,7 @@ fn directive_line(directive: String, csp: domains::Collection) -> String {
     return directive_line;
 }
 
-fn something(directives: Vec<String>, json: &str) -> Vec<JoinHandle<String>> {
+fn parse_config(directives: Vec<String>, json: &str) -> Vec<JoinHandle<String>> {
     let mut threads: Vec<JoinHandle<String>> = vec![];
 
     for directive in directives {
@@ -39,12 +39,12 @@ fn something(directives: Vec<String>, json: &str) -> Vec<JoinHandle<String>> {
 }
 
 pub fn build(directives_list: impl GetDirectives, json: &str) -> String {
-    let result: Vec<JoinHandle<String>> = self::something(
+    let result: Vec<JoinHandle<String>> = self::parse_config(
         directives_list.get_directives(), 
         json
     );
 
-    let mut directives: String = String::from("");
+    let mut directives: String = String::new();
 
     for item in result {
         directives.push_str(item.join().unwrap().as_str());

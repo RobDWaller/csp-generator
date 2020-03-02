@@ -1,9 +1,7 @@
+use crate::GetDirectives;
+
 pub struct Directives {
     list: Vec<String>
-}
-
-pub trait GetDirectives {
-    fn get_directives(&self) -> Vec<String>;
 }
 
 impl GetDirectives for Directives {

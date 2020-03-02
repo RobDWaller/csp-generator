@@ -13,7 +13,8 @@ impl GetDirectives for Directives {
 pub fn get_directives() -> Directives {
     return Directives{
         list: vec![
-            String::from("script-src")
+            String::from("script-src"),
+            String::from("connect-src")
         ]
     }
 }

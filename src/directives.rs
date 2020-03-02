@@ -2,11 +2,7 @@ use std::thread;
 use std::thread::JoinHandle;
 use crate::domains;
 use crate::parse;
-
-const DIRECTIVE_LIST: [&str; 2] = [
-    "script-src", 
-    "connect-src"
-]; 
+use crate::GetDirectives;
 
 fn directive_line(directive: String, csp: domains::Collection) -> String {
     let mut directive_line: String = directive.to_string();
@@ -23,15 +19,15 @@ fn directive_line(directive: String, csp: domains::Collection) -> String {
     return directive_line;
 }
 
-fn something(list: [&str; 2], json: &str) -> Vec<JoinHandle<String>> {
-    let mut directive_results: Vec<JoinHandle<String>> = vec![];
+fn something(directives: Vec<String>, json: &str) -> Vec<JoinHandle<String>> {
+    let mut threads: Vec<JoinHandle<String>> = vec![];
 
-    for directive in list.iter() {
+    for directive in directives {
         let option: Option<domains::Collection> = parse::json(json);
         if !option.is_none() {
             let directive_string: String = directive.to_string();
             
-            directive_results.push(
+            threads.push(
                 thread::spawn(move || {
                     return self::directive_line(directive_string, option.unwrap());
                 })
@@ -39,15 +35,18 @@ fn something(list: [&str; 2], json: &str) -> Vec<JoinHandle<String>> {
         }
     }
 
-    return directive_results;
+    return threads;
 }
 
-pub fn build(json: &str) -> String {
-    let directive_results: Vec<JoinHandle<String>> = self::something(DIRECTIVE_LIST, json);
+pub fn build(directives_list: impl GetDirectives, json: &str) -> String {
+    let result: Vec<JoinHandle<String>> = self::something(
+        directives_list.get_directives(), 
+        json
+    );
 
     let mut directives: String = String::from("");
 
-    for item in directive_results {
+    for item in result {
         directives.push_str(item.join().unwrap().as_str());
     }
 

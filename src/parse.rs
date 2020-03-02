@@ -1,15 +1,15 @@
 use crate::domains;
 
-pub fn json(json: &str) -> Option<domains::Collection> {    
+pub fn json(json: &str) -> Result<domains::Collection, String> {    
     let result = serde_json::from_str(json);
 
     if !result.is_err() {
         let parsed: domains::Collection = result.unwrap();
 
-        return Some(parsed);
+        return Ok(parsed);
     }
 
-    return None;
+    return Err(String::from("Unable to parse JSON."));
 }
 
 #[cfg(test)]
@@ -40,6 +40,6 @@ mod parse_json_test {
 
         let domains = super::json(json);
 
-        assert!(domains.is_none());
+        assert!(domains.is_err());
     }
 }

@@ -23,13 +23,13 @@ fn something(directives: Vec<String>, json: &str) -> Vec<JoinHandle<String>> {
     let mut threads: Vec<JoinHandle<String>> = vec![];
 
     for directive in directives {
-        let option: Option<domains::Collection> = parse::json(json);
-        if !option.is_none() {
+        let result: Result<domains::Collection, String> = parse::json(json);
+        if !result.is_err() {
             let directive_string: String = directive.to_string();
             
             threads.push(
                 thread::spawn(move || {
-                    return self::directive_line(directive_string, option.unwrap());
+                    return self::directive_line(directive_string, result.unwrap());
                 })
             );
         }

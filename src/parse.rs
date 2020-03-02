@@ -1,16 +1,10 @@
-use crate::csp_item;
-extern crate serde_json;
+use crate::domains;
 
-#[derive(Serialize, Deserialize)]
-pub struct CspJson {
-    pub domains: Vec<csp_item::CspItem>
-}
-
-pub fn json_to_csp(json: &str) -> Option<CspJson> {    
+pub fn json(json: &str) -> Option<domains::Collection> {    
     let result = serde_json::from_str(json);
 
     if !result.is_err() {
-        let parsed: CspJson = result.unwrap();
+        let parsed: domains::Collection = result.unwrap();
 
         return Some(parsed);
     }
@@ -19,9 +13,9 @@ pub fn json_to_csp(json: &str) -> Option<CspJson> {
 }
 
 #[cfg(test)]
-mod csp_json_test {
+mod parse_json_test {
     #[test]
-    fn test_json_to_csp() {
+    fn test_parse_json() {
         let json = r#"
             {
                 "domains": [
@@ -31,7 +25,7 @@ mod csp_json_test {
             }
         "#;
 
-        let result = super::json_to_csp(json);
+        let result = super::json(json);
 
         let domains = result.unwrap(); 
 
@@ -41,10 +35,10 @@ mod csp_json_test {
     }
 
     #[test]
-    fn test_json_to_csp_empty() {
+    fn test_parse_json_empty() {
         let json = r#""#;
 
-        let domains = super::json_to_csp(json);
+        let domains = super::json(json);
 
         assert!(domains.is_none());
     }

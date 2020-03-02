@@ -1,19 +1,24 @@
 #[derive(Serialize, Deserialize)]
-pub struct CspItem{
+pub struct Item{
     pub domain: String,
     pub directive: Vec<String>
 }
 
+#[derive(Serialize, Deserialize)]
+pub struct Collection {
+    pub domains: Vec<Item>
+}
+
 #[cfg(test)]
-mod csp_item_test {
+mod item_test {
     #[test]
-    fn test_csp_item_struct() {
+    fn test_item_struct() {
         let directive: Vec<String> = vec![
             String::from("connect-src"),
             String::from("script-src")
         ];
 
-        let item = super::CspItem{
+        let item = super::Item{
             domain: String::from("*.example.com"),
             directive: directive
         };

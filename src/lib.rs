@@ -3,3 +3,4 @@ mod domains;
 extern crate serde_derive;
 mod parse;
 pub mod directives;
+pub mod config;

@@ -1,5 +1,5 @@
-pub mod csp_item;
+mod domains;
 #[macro_use]
 extern crate serde_derive;
-pub mod csp_json;
-pub mod csp_string;
+mod parse;
+pub mod directives;

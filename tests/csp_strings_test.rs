@@ -26,7 +26,7 @@ mod csp_string_test {
             domains: domains
         };
 
-        let connect_src: String = csp_string::directive_line("connect-src", json);
+        let connect_src: String = csp_string::directive_line(String::from("connect-src"), json);
 
         assert_eq!(connect_src, String::from("connect-src: *.example.com; "));
     }

@@ -1,9 +1,12 @@
 language: rust
 rust:
 - stable
+before_cache: 
+- cargo install cargo-tarpaulin
 before_script:
 - rustup component add clippy
 script:
 - cargo build --verbose --all
 - cargo clippy --all-targets --all-features -- -D warnings
 - cargo test --verbose --all
+- cargo tarpaulin -v

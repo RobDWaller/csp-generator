@@ -1,3 +1,5 @@
+use serde_json::error;
+
 #[macro_use]
 extern crate serde_derive;
 
@@ -11,13 +13,27 @@ pub trait GetDirectives {
 }
 
 pub fn enforce(directives: impl GetDirectives, json: &str) -> String {
-    let mut directive: String = String::from("content-security-policy ");
-    directive.push_str(directives::build(directives, json).as_str());
-    return directive;
+    let result: Result<String, error::Error> = directives::build(directives, json);
+    
+    match result {
+        Ok(result) => {
+            let mut directive: String = String::from("content-security-policy ");
+            directive.push_str(result.as_str());
+            directive
+        },
+        Err(e) => panic!("Could not parse JSON: {}", e)
+    }
 }
 
 pub fn report_only(directives: impl GetDirectives, json: &str) -> String {
-    let mut directive: String = String::from("content-security-policy-report-only ");
-    directive.push_str(directives::build(directives, json).as_str());
-    return directive;
+    let result: Result<String, error::Error> = directives::build(directives, json);
+    
+    match result {
+        Ok(result) => {
+            let mut directive: String = String::from("content-security-policy-report-only ");
+            directive.push_str(result.as_str());
+            directive
+        },
+        Err(e) => panic!("Could not parse JSON: {}", e)
+    }
 }

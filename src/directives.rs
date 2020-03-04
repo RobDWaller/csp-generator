@@ -1,14 +1,15 @@
+use serde_json::error;
 use std::thread;
 use std::thread::JoinHandle;
 use crate::domains;
 use crate::parse;
 use crate::GetDirectives;
 
-fn directive_line(directive: String, csp: domains::Collection) -> String {
+fn build_line(directive: String, domains: domains::Collection) -> String {
     let mut directive_line: String = directive.to_string();
     directive_line.push_str(":");
 
-    for domain in csp.domains {
+    for domain in domains.domains {
         if domain.directive.contains(&directive.to_string()) {
             directive_line.push_str(" ");
             directive_line.push_str(domain.domain.as_str());
@@ -16,69 +17,76 @@ fn directive_line(directive: String, csp: domains::Collection) -> String {
     }
 
     directive_line.push_str("; ");
-    return directive_line;
+    directive_line
 }
 
-fn parse_config(directives: Vec<String>, json: &str) -> Vec<JoinHandle<String>> {
+fn create_thread(directive: String, domains: domains::Collection) -> JoinHandle<String> {
+    thread::spawn(move || {
+        self::build_line(directive, domains.clone())
+    })
+}
+
+fn build_lines(directives: Vec<String>, domains: domains::Collection) -> Vec<JoinHandle<String>> { 
     let mut threads: Vec<JoinHandle<String>> = vec![];
 
     for directive in directives {
-        let result: Result<domains::Collection, String> = parse::json(json);
-        if !result.is_err() {
-            let directive_string: String = directive.to_string();
-            
-            threads.push(
-                thread::spawn(move || {
-                    return self::directive_line(directive_string, result.unwrap());
-                })
-            );
-        }
+        threads.push(
+            self::create_thread(directive.to_string(), domains.clone())
+        );
     }
 
-    return threads;
+    threads
 }
 
-pub fn build(directives_list: impl GetDirectives, json: &str) -> String {
-    let result: Vec<JoinHandle<String>> = self::parse_config(
-        directives_list.get_directives(), 
-        json
-    );
+pub fn build(directives_list: impl GetDirectives, json: &str) -> Result<String, error::Error> {
+    let domains: Result<domains::Collection, error::Error> = parse::json(json);
 
-    let mut directives: String = String::new();
+    match domains {
+        Ok(domains) => {
+            let threads: Vec<JoinHandle<String>> = self::build_lines(
+                directives_list.get_directives(),
+                domains
+            );
 
-    for item in result {
-        directives.push_str(item.join().unwrap().as_str());
+            let mut directives: String = String::new();
+
+            for thread in threads {
+                directives.push_str(thread.join().unwrap().as_str());
+            }
+
+            Ok(directives.trim().to_string())
+        },
+        Err(e) => Err(e)
     }
-
-    return directives.trim().to_string();
 }
 
 #[cfg(test)]
 mod directives_test {
     use crate::domains;
     use crate::config;
+    use serde_json::error;
 
     #[test]
-    fn test_directive_line() {
+    fn test_build_line() {
 
-        let directive: Vec<String> = vec![
+        let directives: Vec<String> = vec![
             String::from("connect-src"),
             String::from("script-src")
         ];
 
         let item = domains::Item{
             domain: String::from("*.example.com"),
-            directive: directive
+            directive: directives
         };
 
-        let mut domains: Vec<domains::Item> = Vec::new();
-        domains.push(item);
+        let mut domain_list: Vec<domains::Item> = Vec::new();
+        domain_list.push(item);
 
         let json = domains::Collection{
-            domains: domains
+            domains: domain_list
         };
 
-        let connect_src: String = super::directive_line(String::from("connect-src"), json);
+        let connect_src: String = super::build_line(String::from("connect-src"), json);
 
         assert_eq!(connect_src, String::from("connect-src: *.example.com; "));
     }
@@ -94,8 +102,8 @@ mod directives_test {
             }
         "#;
 
-        let csp: String = super::build(config::get_directives(), json);
+        let csp: Result<String, error::Error> = super::build(config::get_directives(), json);
 
-        assert_eq!(csp, String::from("script-src: test.com; connect-src: example.com test.com;"));
+        assert_eq!(csp.unwrap(), String::from("script-src: test.com; connect-src: example.com test.com;"));
     }
 }

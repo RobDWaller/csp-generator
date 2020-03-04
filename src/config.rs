@@ -6,12 +6,12 @@ pub struct Directives {
 
 impl GetDirectives for Directives {
     fn get_directives(&self) -> Vec<String> {
-        return self.list.clone();
+        self.list.clone()
     }
 }
 
 pub fn get_directives() -> Directives {
-    return Directives{
+    Directives{
         list: vec![
             String::from("script-src"),
             String::from("connect-src")

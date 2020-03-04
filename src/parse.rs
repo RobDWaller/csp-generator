@@ -2,19 +2,6 @@ use serde_json::error;
 use crate::domains;
 
 pub fn json(json: &str) -> Result<domains::Collection, error::Error> {    
-    // let result = serde_json::from_str(json);
-
-    // if result.is_ok() {
-    //     let parsed: domains::Collection = result.unwrap();
-
-    //     return Ok(parsed);
-    // }
-
-    // Err(String::from("Unable to parse JSON."))
-
-    // let parsed: domains::Collection = serde_json::from_str(json)?.unwrap();
-    // Ok(parsed)
-
     let result = serde_json::from_str(json);    
 
     match result {

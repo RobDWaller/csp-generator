@@ -1,4 +1,11 @@
 language: rust
+sudo: required
+dist: trusty
+addons:
+    apt:
+        packages:
+            - libssl-dev
+cache: cargo
 rust:
 - stable
 before_cache: 
@@ -9,4 +16,5 @@ script:
 - cargo build --verbose --all
 - cargo clippy --all-targets --all-features -- -D warnings
 - cargo test --verbose --all
+after_success:
 - cargo tarpaulin -v

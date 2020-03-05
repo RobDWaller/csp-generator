@@ -5,6 +5,8 @@ version = "0.1.0-alpha"
 authors = ["Rob Waller <rdwaller1984@gmail.com>"]
 edition = "2018"
 keywords = ["csp", "json", "content-security", "csp-generator", "security"]
+license = "MIT"
+homepage = "https://github.com/RobDWaller/csp-generator"
 
 [lib]
 bench = false

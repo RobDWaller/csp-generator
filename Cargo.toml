@@ -4,7 +4,7 @@ description = "Consume a JSON formatted list of domains and CSP directives and o
 version = "0.1.0-alpha"
 authors = ["Rob Waller <rdwaller1984@gmail.com>"]
 edition = "2018"
-keywords = ["csp", "json", "content security policies", "csp generator"]
+keywords = ["csp", "json", "content-security-policies", "csp-generator"]
 
 [lib]
 bench = false

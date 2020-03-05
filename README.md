@@ -1,6 +1,6 @@
 # Content Security Policies Generator
 
-This is a simple library which consumes a JSON formatted list of Domains and CSP Directives and outputs a correctly formatted CSP string.
+This is a simple library which consumes a JSON formatted list of domains and CSP directives and outputs a correctly formatted Content Security Policy string.
 
 # Usage
 

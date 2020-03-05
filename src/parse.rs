@@ -1,15 +1,15 @@
-use serde_json::error;
 use crate::domains;
+use serde_json::error;
 
-pub fn json(json: &str) -> Result<domains::Collection, error::Error> {    
-    let result = serde_json::from_str(json);    
+pub fn json(json: &str) -> Result<domains::Collection, error::Error> {
+    let result = serde_json::from_str(json);
 
     match result {
-        Ok(result) => { 
+        Ok(result) => {
             let parsed: domains::Collection = result;
             Ok(parsed)
-        },
-        Err(e) => Err(e)
+        }
+        Err(e) => Err(e),
     }
 }
 
@@ -26,9 +26,7 @@ mod parse_json_test {
             }
         "#;
 
-        let result = super::json(json);
-
-        let domains = result.unwrap(); 
+        let domains = super::json(json).unwrap();
 
         assert_eq!(domains.domains[0].domain, "example.com");
         assert_eq!(domains.domains[1].domain, "test.com");

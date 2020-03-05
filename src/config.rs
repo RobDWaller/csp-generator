@@ -44,6 +44,8 @@ mod config_test {
     fn test_get_directives() {
         let config: super::Directives = super::get_directives();
 
-        assert_eq!(config.get_directives()[0], String::from("script-src"));
+        assert_eq!(config.get_directives()[0], String::from("default-src"));
+        assert_eq!(config.get_directives()[9], String::from("sandbox"));
+        assert_eq!(config.get_directives()[18], String::from("navigate-to"));
     }
 }

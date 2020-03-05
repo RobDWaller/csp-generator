@@ -16,7 +16,12 @@ mod csp_generator_test {
 
         let csp: String = csp_generator::enforce(config::get_directives(), json);
 
-        assert_eq!(csp, String::from("content-security-policy script-src: test.com; connect-src: example.com test.com;"));
+        assert_eq!(
+            csp,
+            String::from(
+                "content-security-policy script-src: test.com; connect-src: example.com test.com;"
+            )
+        );
     }
 
     #[test]
@@ -32,6 +37,11 @@ mod csp_generator_test {
 
         let csp: String = csp_generator::report_only(config::get_directives(), json);
 
-        assert_eq!(csp, String::from("content-security-policy-report-only script-src: test.com; connect-src: example.com test.com;"));
+        assert_eq!(
+            csp,
+            String::from(
+                "content-security-policy-report-only script-src: test.com; connect-src: example.com test.com;"
+            )
+        );
     }
 }

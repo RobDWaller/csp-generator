@@ -25,6 +25,29 @@ mod csp_generator_test {
     }
 
     #[test]
+    #[should_panic(expected = "Could not parse JSON: EOF while parsing a value at line 1 column 0")]
+    fn test_enforce_empty_fail() {
+        let json = "";
+
+        csp_generator::enforce(config::get_directives(), json);
+    }
+
+    #[test]
+    #[should_panic(expected = "Could not parse JSON: missing field")]
+    fn test_enforce_format_fail() {
+        let json = r#"
+            {
+                "domains": [
+                    {"domain": "example.com", "diroctive": ["connect-src"]},
+                    {"domain": "test.com", "directive": ["connect-src", "script-src"]}
+                ]
+            }
+        "#;
+
+        csp_generator::enforce(config::get_directives(), json);
+    }
+
+    #[test]
     fn test_report_only() {
         let json = r#"
             {
@@ -43,5 +66,28 @@ mod csp_generator_test {
                 "content-security-policy-report-only script-src: test.com; connect-src: example.com test.com;"
             )
         );
+    }
+
+    #[test]
+    #[should_panic(expected = "Could not parse JSON: EOF while parsing a value at line 1 column 0")]
+    fn test_report_only_empty_fail() {
+        let json = "";
+
+        csp_generator::report_only(config::get_directives(), json);
+    }
+
+    #[test]
+    #[should_panic(expected = "Could not parse JSON: missing field")]
+    fn test_report_only_format_fail() {
+        let json = r#"
+            {
+                "domains": [
+                    {"domain": "example.com", "directive": ["connect-src"]},
+                    {"directive": ["connect-src", "script-src"]}
+                ]
+            }
+        "#;
+
+        csp_generator::report_only(config::get_directives(), json);
     }
 }

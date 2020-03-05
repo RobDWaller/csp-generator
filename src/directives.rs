@@ -7,7 +7,6 @@ use std::thread::JoinHandle;
 
 fn build_line(directive: String, domains: domains::Collection) -> String {
     let mut directive_line: String = directive.to_string();
-    directive_line.push_str(":");
 
     for domain in domains.domains {
         if domain.directive.contains(&directive.to_string()) {
@@ -78,7 +77,7 @@ mod directives_test {
 
         let connect_src: String = super::build_line(String::from("connect-src"), json);
 
-        assert_eq!(connect_src, String::from("connect-src: *.example.com; "));
+        assert_eq!(connect_src, String::from("connect-src *.example.com; "));
     }
 
     #[test]
@@ -96,7 +95,7 @@ mod directives_test {
 
         assert_eq!(
             csp.unwrap(),
-            String::from("script-src: test.com; connect-src: example.com test.com;")
+            String::from("script-src test.com; connect-src example.com test.com;")
         );
     }
 }

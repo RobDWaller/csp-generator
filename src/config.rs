@@ -31,7 +31,7 @@ pub fn get_directives() -> Directives {
             String::from("report-to"),
             String::from("worker-src"),
             String::from("manifest-src"),
-            String::from("navigate-to")
+            String::from("navigate-to"),
         ],
     }
 }

@@ -1,7 +1,7 @@
 use crate::GetDirectives;
 
 pub struct Directives {
-    list: Vec<String>
+    list: Vec<String>,
 }
 
 impl GetDirectives for Directives {
@@ -11,11 +11,8 @@ impl GetDirectives for Directives {
 }
 
 pub fn get_directives() -> Directives {
-    Directives{
-        list: vec![
-            String::from("script-src"),
-            String::from("connect-src")
-        ]
+    Directives {
+        list: vec![String::from("script-src"), String::from("connect-src")],
     }
 }
 

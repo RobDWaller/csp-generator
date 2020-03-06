@@ -7,6 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions-rs/cargo@v1
+      - uses: actions-rs/toolchain@v1
         with:
-          command: build
+          toolchain: stable
+      - run: cargo build
+      - run: cargo test

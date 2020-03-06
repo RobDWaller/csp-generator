@@ -17,6 +17,5 @@ jobs:
       - run: cargo fmt -- --check
       - run: cargo clippy --all-targets --all-features -- -D warnings
       - uses: actions-rs/tarpaulin@v0.1
-        with:
-          version: '0.11.0'
-          args: '-- --test-threads 1'
+        with: 
+          args: '-v'

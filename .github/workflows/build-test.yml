@@ -7,7 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
+      - name: Build, Test, Analyse
+        uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
       - run: rustup component add clippy
@@ -16,6 +17,9 @@ jobs:
       - run: cargo test
       - run: cargo fmt -- --check
       - run: cargo clippy --all-targets --all-features -- -D warnings
-      - uses: actions-rs/tarpaulin@v0.1
+      - name: Code Coverage
+        uses: actions-rs/tarpaulin@v0.1
         with: 
           args: '-v'
+      - name: Codecov.io
+        uses: codecov/codecov-action@v1.0.2

@@ -17,7 +17,7 @@ pub fn enforce(directives: impl GetDirectives, json: &str) -> String {
 
     match result {
         Ok(result) => {
-            let mut directive: String = String::from("content-security-policy ");
+            let mut directive: String = String::from("Content-Security-Policy ");
             directive.push_str(result.as_str());
             directive
         }
@@ -30,7 +30,7 @@ pub fn report_only(directives: impl GetDirectives, json: &str) -> String {
 
     match result {
         Ok(result) => {
-            let mut directive: String = String::from("content-security-policy-report-only ");
+            let mut directive: String = String::from("Content-Security-Policy-Report-Only ");
             directive.push_str(result.as_str());
             directive
         }

@@ -19,7 +19,7 @@ mod csp_generator_test {
         assert_eq!(
             csp,
             String::from(
-                "content-security-policy script-src: test.com; connect-src: example.com test.com;"
+                "Content-Security-Policy script-src test.com; connect-src example.com test.com;"
             )
         );
     }
@@ -63,7 +63,7 @@ mod csp_generator_test {
         assert_eq!(
             csp,
             String::from(
-                "content-security-policy-report-only script-src: test.com; connect-src: example.com test.com;"
+                "Content-Security-Policy-Report-Only script-src test.com; connect-src example.com test.com;"
             )
         );
     }

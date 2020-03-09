@@ -4,14 +4,15 @@ on:
   release:
     types: [published]
 
-    build:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v2
-        - name: Build and Publish
-          uses: actions-rs/toolchain@v1
-          with:
-            toolchain: stable
-        - run: cargo build
-        - run: cargo login${{secrets.CRATES_TOKEN}}
-        - run: cargo publish
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build and Publish
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - run: cargo build
+      - run: cargo login${{secrets.CRATES_TOKEN}}
+      - run: cargo publish

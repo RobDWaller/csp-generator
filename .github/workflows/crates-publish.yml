@@ -14,5 +14,5 @@ jobs:
         with:
           toolchain: stable
       - run: cargo build
-      - run: cargo login${{secrets.CRATES_TOKEN}}
+      - run: cargo login ${{secrets.CRATES_TOKEN}}
       - run: cargo publish

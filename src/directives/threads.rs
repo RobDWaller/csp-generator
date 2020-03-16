@@ -1,10 +1,10 @@
 use std::thread;
 use std::thread::JoinHandle;
 use crate::domains;
-use crate::directives::lines;
+use crate::directives::line;
 
 fn create_thread(directive: String, domains: domains::Collection) -> JoinHandle<String> {
-    thread::spawn(move || lines::build_line(directive, domains.clone()))
+    thread::spawn(move || line::build(directive, domains.clone()))
 }
 
 pub fn build_lines(directives: Vec<String>, domains: domains::Collection) -> Vec<JoinHandle<String>> {

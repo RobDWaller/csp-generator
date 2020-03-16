@@ -4,7 +4,7 @@ use crate::GetDirectives;
 use serde_json::error;
 use std::thread::JoinHandle;
 
-mod lines;
+mod line;
 mod threads;
 
 pub fn build(directives_list: impl GetDirectives, json: &str) -> Result<String, error::Error> {
@@ -30,7 +30,6 @@ pub fn build(directives_list: impl GetDirectives, json: &str) -> Result<String, 
 #[cfg(test)]
 mod directives_test {
     use crate::config;
-    use crate::domains;
     use serde_json::error;
 
     #[test]

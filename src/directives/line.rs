@@ -1,6 +1,6 @@
 use crate::domains;
 
-pub fn build_line(directive: String, domains: domains::Collection) -> String {
+pub fn build(directive: String, domains: domains::Collection) -> String {
     let mut directive_line: String = directive.clone();
     let mut directive_check: String = directive.clone();
     directive_check.push_str("; ");
@@ -24,9 +24,9 @@ pub fn build_line(directive: String, domains: domains::Collection) -> String {
 #[cfg(test)]
 mod lines_test {
     use crate::domains;
-    
+
     #[test]
-    fn test_build_line() {
+    fn test_build() {
         let directives: Vec<String> = vec![String::from("connect-src"), String::from("script-src")];
 
         let item = domains::Item {
@@ -41,7 +41,7 @@ mod lines_test {
             domains: domain_list,
         };
 
-        let connect_src: String = super::build_line(String::from("connect-src"), json);
+        let connect_src: String = super::build(String::from("connect-src"), json);
 
         assert_eq!(connect_src, String::from("connect-src *.example.com; "));
     }
@@ -62,7 +62,7 @@ mod lines_test {
             domains: domain_list,
         };
 
-        let default_src: String = super::build_line(String::from("default-src"), json);
+        let default_src: String = super::build(String::from("default-src"), json);
 
         assert_eq!(default_src, String::from(""));
     }

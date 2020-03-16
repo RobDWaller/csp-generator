@@ -1,11 +1,9 @@
 use crate::domains;
 
-pub fn build(directive: String, domains: domains::Collection) -> String {
-    let mut directive_line: String = directive.clone();
-    let mut directive_check: String = directive.clone();
-    directive_check.push_str("; ");
-
-    for domain in domains.domains {
+fn domains_to_directive(directive: String, domains: Vec<domains::Item>) -> String {
+    let mut directive_line = directive.clone();
+    
+    for domain in domains {
         if domain.directive.contains(&directive) {
             directive_line.push_str(" ");
             directive_line.push_str(domain.domain.as_str());
@@ -13,12 +11,26 @@ pub fn build(directive: String, domains: domains::Collection) -> String {
     }
 
     directive_line.push_str("; ");
+    directive_line
+}
 
-    if directive_line == directive_check {
+fn check_line(directive_line: String, check: String) -> String {
+    if directive_line == check {
         return String::from("");
     }
 
     directive_line
+}
+
+fn create_check(mut directive: String) -> String {
+    directive.push_str("; ");
+    directive
+}
+
+pub fn build(directive: String, domains: domains::Collection) -> String {
+    let directive_line = domains_to_directive(directive.clone(), domains.domains);
+
+    check_line(directive_line, create_check(directive))
 }
 
 #[cfg(test)]

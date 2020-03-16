@@ -14,13 +14,12 @@ mod csp_generator_test {
             }
         "#;
 
-        let csp: String = csp_generator::enforce(config::get_directives(), json);
+        let csp: csp_generator::Csp = csp_generator::enforce(config::get_directives(), json);
 
+        assert_eq!(csp.header, String::from("Content-Security-Policy"));
         assert_eq!(
-            csp,
-            String::from(
-                "Content-Security-Policy script-src test.com; connect-src example.com test.com;"
-            )
+            csp.csp,
+            String::from("script-src test.com; connect-src example.com test.com;")
         );
     }
 
@@ -58,13 +57,15 @@ mod csp_generator_test {
             }
         "#;
 
-        let csp: String = csp_generator::report_only(config::get_directives(), json);
+        let csp: csp_generator::Csp = csp_generator::report_only(config::get_directives(), json);
 
         assert_eq!(
-            csp,
-            String::from(
-                "Content-Security-Policy-Report-Only script-src test.com; connect-src example.com test.com;"
-            )
+            csp.header,
+            String::from("Content-Security-Policy-Report-Only")
+        );
+        assert_eq!(
+            csp.csp,
+            String::from("script-src test.com; connect-src example.com test.com;")
         );
     }
 
@@ -89,5 +90,24 @@ mod csp_generator_test {
         "#;
 
         csp_generator::report_only(config::get_directives(), json);
+    }
+
+    #[test]
+    fn test_csp_only() {
+        let json = r#"
+            {
+                "domains": [
+                    {"domain": "example.com", "directive": ["connect-src"]},
+                    {"domain": "test.com", "directive": ["connect-src", "script-src"]}
+                ]
+            }
+        "#;
+
+        let csp: String = csp_generator::csp_only(config::get_directives(), json);
+
+        assert_eq!(
+            csp,
+            String::from("script-src test.com; connect-src example.com test.com;")
+        );
     }
 }

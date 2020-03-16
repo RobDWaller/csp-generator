@@ -17,7 +17,10 @@ mod csp_generator_test {
         let csp: csp_generator::Csp = csp_generator::enforce(config::get_directives(), json);
 
         assert_eq!(csp.header, String::from("Content-Security-Policy"));
-        assert_eq!(csp.csp, String::from("script-src test.com; connect-src example.com test.com;"));
+        assert_eq!(
+            csp.csp,
+            String::from("script-src test.com; connect-src example.com test.com;")
+        );
     }
 
     #[test]
@@ -56,8 +59,14 @@ mod csp_generator_test {
 
         let csp: csp_generator::Csp = csp_generator::report_only(config::get_directives(), json);
 
-        assert_eq!(csp.header, String::from("Content-Security-Policy-Report-Only"));
-        assert_eq!(csp.csp, String::from("script-src test.com; connect-src example.com test.com;"));
+        assert_eq!(
+            csp.header,
+            String::from("Content-Security-Policy-Report-Only")
+        );
+        assert_eq!(
+            csp.csp,
+            String::from("script-src test.com; connect-src example.com test.com;")
+        );
     }
 
     #[test]
@@ -96,6 +105,9 @@ mod csp_generator_test {
 
         let csp: String = csp_generator::csp_only(config::get_directives(), json);
 
-        assert_eq!(csp, String::from("script-src test.com; connect-src example.com test.com;"));
+        assert_eq!(
+            csp,
+            String::from("script-src test.com; connect-src example.com test.com;")
+        );
     }
 }

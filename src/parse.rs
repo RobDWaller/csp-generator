@@ -41,4 +41,19 @@ mod parse_json_test {
 
         assert!(domains.is_err());
     }
+
+    #[test]
+    fn test_parse_json_bad() {
+        let json = r#"
+            {
+                "domains": [
+                    {"domain": "example.com", "diroctive": ["connect-src", "script-src"]}
+                ]
+            }
+        "#;
+
+        let domains = super::json(json);
+
+        assert!(domains.is_err());
+    }
 }

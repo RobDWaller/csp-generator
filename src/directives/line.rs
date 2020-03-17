@@ -2,7 +2,7 @@ use crate::domains;
 
 fn domains_to_directive(directive: String, domains: Vec<domains::Item>) -> String {
     let mut directive_line = directive.clone();
-    
+
     for domain in domains {
         if domain.directive.contains(&directive) {
             directive_line.push_str(" ");

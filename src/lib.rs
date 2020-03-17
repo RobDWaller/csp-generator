@@ -78,4 +78,4 @@ mod csp_generator_test {
         assert_eq!(csp.header, String::from("CSP"));
         assert_eq!(csp.csp, String::from("Hello World"));
     }
-} 
+}

@@ -7,6 +7,16 @@ use std::thread::JoinHandle;
 mod line;
 mod threads;
 
+fn threads_to_directives(threads: Vec<JoinHandle<String>>) -> String {
+    let mut directives: String = String::new();
+
+    for thread in threads {
+        directives.push_str(thread.join().unwrap().as_str());
+    }
+
+    directives.trim().to_string()
+}
+
 pub fn build(directives_list: impl GetDirectives, json: &str) -> Result<String, error::Error> {
     let domains: Result<domains::Collection, error::Error> = parse::json(json);
 
@@ -15,13 +25,7 @@ pub fn build(directives_list: impl GetDirectives, json: &str) -> Result<String, 
             let threads: Vec<JoinHandle<String>> =
                 threads::build_lines(directives_list.get_directives(), domains);
 
-            let mut directives: String = String::new();
-
-            for thread in threads {
-                directives.push_str(thread.join().unwrap().as_str());
-            }
-
-            Ok(directives.trim().to_string())
+            Ok(threads_to_directives(threads))
         }
         Err(e) => Err(e),
     }

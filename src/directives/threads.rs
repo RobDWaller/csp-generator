@@ -20,6 +20,9 @@ pub fn build_lines(
     threads
 }
 
+// -----
+// Tests
+// -----
 #[cfg(test)]
 mod threads_test {
     use crate::domains;

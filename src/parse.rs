@@ -13,6 +13,9 @@ pub fn json(json: &str) -> Result<domains::Collection, error::Error> {
     }
 }
 
+// -----
+// Tests
+// -----
 #[cfg(test)]
 mod parse_json_test {
     #[test]

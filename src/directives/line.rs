@@ -33,6 +33,9 @@ pub fn build(directive: String, domains: domains::Collection) -> String {
     check_line(directive_line, create_check(directive))
 }
 
+// -----
+// Tests
+// -----
 #[cfg(test)]
 mod lines_test {
     use crate::domains;

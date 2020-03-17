@@ -50,6 +50,9 @@ pub fn csp_only(directives: impl GetDirectives, json: &str) -> String {
     .csp
 }
 
+// -----
+// Tests
+// -----
 #[cfg(test)]
 mod csp_generator_test {
     #[test]

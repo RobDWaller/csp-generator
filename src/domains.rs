@@ -9,6 +9,9 @@ pub struct Collection {
     pub domains: Vec<Item>,
 }
 
+// -----
+// Tests
+// -----
 #[cfg(test)]
 mod item_test {
     #[test]

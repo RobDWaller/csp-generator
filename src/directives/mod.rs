@@ -31,6 +31,9 @@ pub fn build(directives_list: impl GetDirectives, json: &str) -> Result<String, 
     }
 }
 
+// -----
+// Tests
+// -----
 #[cfg(test)]
 mod directives_test {
     use crate::config;

@@ -13,6 +13,9 @@ pub fn json(json: &str) -> Result<domains::Collection, error::Error> {
     }
 }
 
+// -----
+// Tests
+// -----
 #[cfg(test)]
 mod parse_json_test {
     #[test]
@@ -36,6 +39,21 @@ mod parse_json_test {
     #[test]
     fn test_parse_json_empty() {
         let json = r#""#;
+
+        let domains = super::json(json);
+
+        assert!(domains.is_err());
+    }
+
+    #[test]
+    fn test_parse_json_bad() {
+        let json = r#"
+            {
+                "domains": [
+                    {"domain": "example.com", "diroctive": ["connect-src", "script-src"]}
+                ]
+            }
+        "#;
 
         let domains = super::json(json);
 

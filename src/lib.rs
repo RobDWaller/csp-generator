@@ -49,3 +49,36 @@ pub fn csp_only(directives: impl GetDirectives, json: &str) -> String {
     )
     .csp
 }
+
+// -----
+// Tests
+// -----
+#[cfg(test)]
+mod csp_generator_test {
+    #[test]
+    fn test_csp_struct() {
+        let csp = super::Csp {
+            header: String::from("header"),
+            csp: String::from("csp"),
+        };
+
+        assert_eq!(csp.header, String::from("header"));
+        assert_eq!(csp.csp, String::from("csp"));
+    }
+
+    #[test]
+    fn test_generate_csp() {
+        let csp = super::generate_csp(String::from("my header"), String::from("my csp"));
+
+        assert_eq!(csp.header, String::from("my header"));
+        assert_eq!(csp.csp, String::from("my csp"));
+    }
+
+    #[test]
+    fn test_parse_csp_result() {
+        let csp = super::parse_csp_result(String::from("CSP"), Ok(String::from("Hello World")));
+
+        assert_eq!(csp.header, String::from("CSP"));
+        assert_eq!(csp.csp, String::from("Hello World"));
+    }
+}

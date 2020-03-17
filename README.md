@@ -1,3 +1,4 @@
+[![Actions Status](https://github.com/RobDWaller/csp-generator/workflows/Build%20and%20Test/badge.svg)](https://github.com/RobDWaller/csp-generator/actions) [![Crates.io](https://img.shields.io/crates/v/csp_generator)] [![codecov](https://codecov.io/gh/RobDWaller/csp-generator/branch/master/graph/badge.svg)](https://codecov.io/gh/RobDWaller/csp-generator)
 # Content Security Policies Generator
 
 This is a simple library which consumes a JSON formatted list of domains and CSP directives and outputs a correctly formatted Content Security Policy string.

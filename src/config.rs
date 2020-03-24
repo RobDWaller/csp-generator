@@ -23,7 +23,6 @@ pub fn get_directives() -> Directives {
             String::from("media-src"),
             String::from("frame-src"),
             String::from("sandbox"),
-            String::from("report-uri"),
             String::from("child-src"),
             String::from("form-action"),
             String::from("frame-ancestors"),
@@ -32,6 +31,7 @@ pub fn get_directives() -> Directives {
             String::from("worker-src"),
             String::from("manifest-src"),
             String::from("navigate-to"),
+            String::from("report-uri"),
         ],
     }
 }
@@ -46,6 +46,7 @@ mod config_test {
 
         assert_eq!(config.get_directives()[0], String::from("default-src"));
         assert_eq!(config.get_directives()[9], String::from("sandbox"));
-        assert_eq!(config.get_directives()[18], String::from("navigate-to"));
+        assert_eq!(config.get_directives()[18], String::from("report-uri"));
+        assert_eq!(config.get_directives().len(), 19);
     }
 }

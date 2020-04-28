@@ -1,6 +1,6 @@
-use crate::domains;
+use crate::domains::{Collection, Item};
 
-fn domains_to_directive(directive: String, domains: Vec<domains::Item>) -> String {
+fn domains_to_directive(directive: String, domains: Vec<Item>) -> String {
     let mut directive_line = directive.clone();
 
     for domain in domains {
@@ -27,8 +27,8 @@ fn create_check(mut directive: String) -> String {
     directive
 }
 
-pub fn build(directive: String, domains: domains::Collection) -> String {
-    let directive_line = domains_to_directive(directive.clone(), domains.domains);
+pub fn build(directive: String, domains: Collection) -> String {
+    let directive_line = domains_to_directive(directive.clone(), domains);
 
     check_line(directive_line, create_check(directive))
 }
@@ -38,25 +38,21 @@ pub fn build(directive: String, domains: domains::Collection) -> String {
 // -----
 #[cfg(test)]
 mod lines_test {
-    use crate::domains;
+    use crate::domains::{Collection, Item};
 
     #[test]
     fn test_build() {
         let directives: Vec<String> = vec![String::from("connect-src"), String::from("script-src")];
 
-        let item = domains::Item {
+        let item = Item {
             domain: String::from("*.example.com"),
             directive: directives,
         };
 
-        let mut domain_list: Vec<domains::Item> = Vec::new();
+        let mut domain_list: Collection = Vec::new();
         domain_list.push(item);
 
-        let json = domains::Collection {
-            domains: domain_list,
-        };
-
-        let connect_src: String = super::build(String::from("connect-src"), json);
+        let connect_src: String = super::build(String::from("connect-src"), domain_list);
 
         assert_eq!(connect_src, String::from("connect-src *.example.com; "));
     }
@@ -65,19 +61,15 @@ mod lines_test {
     fn test_build_line_no_directive() {
         let directives: Vec<String> = vec![String::from("connect-src"), String::from("script-src")];
 
-        let item = domains::Item {
+        let item = Item {
             domain: String::from("*.example.com"),
             directive: directives,
         };
 
-        let mut domain_list: Vec<domains::Item> = Vec::new();
+        let mut domain_list: Collection = Vec::new();
         domain_list.push(item);
 
-        let json = domains::Collection {
-            domains: domain_list,
-        };
-
-        let default_src: String = super::build(String::from("default-src"), json);
+        let default_src: String = super::build(String::from("default-src"), domain_list);
 
         assert_eq!(default_src, String::from(""));
     }

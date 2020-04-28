@@ -42,12 +42,10 @@ mod directives_test {
     #[test]
     fn test_build_directives() {
         let json = r#"
-            {
-                "domains": [
-                    {"domain": "example.com", "directive": ["connect-src"]},
-                    {"domain": "test.com", "directive": ["connect-src", "script-src"]}
-                ]
-            }
+            [
+                {"domain": "example.com", "directive": ["connect-src"]},
+                {"domain": "test.com", "directive": ["connect-src", "script-src"]}
+            ]
         "#;
 
         let csp: Result<String, error::Error> = super::build(config::get_directives(), json);

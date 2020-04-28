@@ -4,10 +4,7 @@ pub struct Item {
     pub directive: Vec<String>,
 }
 
-#[derive(Serialize, Deserialize, Clone)]
-pub struct Collection {
-    pub domains: Vec<Item>,
-}
+pub type Collection = Vec<Item>;
 
 // -----
 // Tests
@@ -36,12 +33,10 @@ mod item_test {
             directive: directives,
         };
 
-        let mut domains: Vec<super::Item> = vec![];
+        let mut domains: super::Collection = vec![];
         domains.push(item);
 
-        let collection = super::Collection { domains };
-
-        assert_eq!(collection.domains[0].domain, "*.example.com");
-        assert_eq!(collection.domains[0].directive[1], "script-src");
+        assert_eq!(domains[0].domain, "*.example.com");
+        assert_eq!(domains[0].directive[1], "script-src");
     }
 }

@@ -7,10 +7,7 @@ fn create(directive: String, domains: Collection) -> JoinHandle<String> {
     thread::spawn(move || line::build(directive, domains.clone()))
 }
 
-pub fn build_lines(
-    directives: Vec<String>,
-    domains: Collection,
-) -> Vec<JoinHandle<String>> {
+pub fn build_lines(directives: Vec<String>, domains: Collection) -> Vec<JoinHandle<String>> {
     let mut threads: Vec<JoinHandle<String>> = vec![];
 
     for directive in directives {
@@ -25,16 +22,16 @@ pub fn build_lines(
 // -----
 #[cfg(test)]
 mod threads_test {
-    use crate::domains::{ Collection, Item };
+    use crate::domains::{Collection, Item};
 
     #[test]
     fn test_create() {
         let domain = String::from("*.google.com");
         let directive = vec![String::from("connect-src")];
 
-        let domain = Item{ domain, directive };
+        let domain = Item { domain, directive };
         let domains: Collection = vec![domain];
-        
+
         let directive_check = String::from("connect-src");
 
         let result = super::create(directive_check, domains);

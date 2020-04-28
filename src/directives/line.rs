@@ -1,4 +1,4 @@
-use crate::domains::{ Collection, Item };
+use crate::domains::{Collection, Item};
 
 fn domains_to_directive(directive: String, domains: Vec<Item>) -> String {
     let mut directive_line = directive.clone();
@@ -38,7 +38,7 @@ pub fn build(directive: String, domains: Collection) -> String {
 // -----
 #[cfg(test)]
 mod lines_test {
-    use crate::domains::{ Collection, Item};
+    use crate::domains::{Collection, Item};
 
     #[test]
     fn test_build() {

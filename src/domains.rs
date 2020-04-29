@@ -1,5 +1,3 @@
-use serde_json;
-
 #[derive(Deserialize, Serialize, Clone)]
 pub struct Item {
     pub domain: String,

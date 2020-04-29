@@ -75,6 +75,9 @@ mod item_test {
         let mut domains: Collection = Collection::new();
         domains.push(item);
 
-        assert_eq!(domains.to_json(), r#"[{"domain":"*.example.com","directives":["connect-src","script-src"]}]"#);
+        assert_eq!(
+            domains.to_json(),
+            r#"[{"domain":"*.example.com","directives":["connect-src","script-src"]}]"#
+        );
     }
 }

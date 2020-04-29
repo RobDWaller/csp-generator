@@ -5,7 +5,7 @@ extern crate serde_derive;
 
 pub mod config;
 mod directives;
-mod domains;
+pub mod domains;
 mod parse;
 
 pub struct Csp {

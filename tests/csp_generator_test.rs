@@ -7,8 +7,8 @@ mod csp_generator_test {
     fn test_enforce() {
         let json = r#"
             [
-                {"domain": "example.com", "directive": ["connect-src"]},
-                {"domain": "test.com", "directive": ["connect-src", "script-src"]}
+                {"domain": "example.com", "directives": ["connect-src"]},
+                {"domain": "test.com", "directives": ["connect-src", "script-src"]}
             ]
         "#;
 
@@ -46,8 +46,8 @@ mod csp_generator_test {
     fn test_report_only() {
         let json = r#"
             [
-                {"domain": "example.com", "directive": ["connect-src"]},
-                {"domain": "test.com", "directive": ["connect-src", "script-src"]}
+                {"domain": "example.com", "directives": ["connect-src"]},
+                {"domain": "test.com", "directives": ["connect-src", "script-src"]}
             ]
         "#;
 
@@ -76,8 +76,8 @@ mod csp_generator_test {
     fn test_report_only_format_fail() {
         let json = r#"
             [
-                {"domain": "example.com", "directive": ["connect-src"]},
-                {"directive": ["connect-src", "script-src"]}
+                {"domain": "example.com", "directives": ["connect-src"]},
+                {"directives": ["connect-src", "script-src"]}
             ]
         "#;
 
@@ -88,8 +88,8 @@ mod csp_generator_test {
     fn test_csp_only() {
         let json = r#"
             [
-                {"domain": "example.com", "directive": ["connect-src"]},
-                {"domain": "test.com", "directive": ["connect-src", "script-src"]}
+                {"domain": "example.com", "directives": ["connect-src"]},
+                {"domain": "test.com", "directives": ["connect-src", "script-src"]}
             ]
         "#;
 

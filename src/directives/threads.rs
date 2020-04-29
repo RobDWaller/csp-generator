@@ -27,9 +27,9 @@ mod threads_test {
     #[test]
     fn test_create() {
         let domain = String::from("*.google.com");
-        let directive = vec![String::from("connect-src")];
+        let directives = vec![String::from("connect-src")];
 
-        let domain = Item { domain, directive };
+        let domain = Item { domain, directives };
         let domains: Collection = vec![domain];
 
         let directive_check = String::from("connect-src");

@@ -4,7 +4,7 @@ fn domains_to_directive(directive: String, domains: Vec<Item>) -> String {
     let mut directive_line = directive.clone();
 
     for domain in domains {
-        if domain.directive.contains(&directive) {
+        if domain.directives.contains(&directive) {
             directive_line.push_str(" ");
             directive_line.push_str(domain.domain.as_str());
         }
@@ -46,7 +46,7 @@ mod lines_test {
 
         let item = Item {
             domain: String::from("*.example.com"),
-            directive: directives,
+            directives,
         };
 
         let mut domain_list: Collection = Vec::new();
@@ -63,7 +63,7 @@ mod lines_test {
 
         let item = Item {
             domain: String::from("*.example.com"),
-            directive: directives,
+            directives,
         };
 
         let mut domain_list: Collection = Vec::new();

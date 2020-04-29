@@ -43,8 +43,8 @@ mod directives_test {
     fn test_build_directives() {
         let json = r#"
             [
-                {"domain": "example.com", "directive": ["connect-src"]},
-                {"domain": "test.com", "directive": ["connect-src", "script-src"]}
+                {"domain": "example.com", "directives": ["connect-src"]},
+                {"domain": "test.com", "directives": ["connect-src", "script-src"]}
             ]
         "#;
 

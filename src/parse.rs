@@ -22,8 +22,8 @@ mod parse_json_test {
     fn test_parse_json() {
         let json = r#"
             [
-                {"domain": "example.com", "directive": ["connect-src", "script-src"]},
-                {"domain": "test.com", "directive": ["script-src", "img-src", "style-src"]}
+                {"domain": "example.com", "directives": ["connect-src", "script-src"]},
+                {"domain": "test.com", "directives": ["script-src", "img-src", "style-src"]}
             ]
         "#;
 
@@ -31,7 +31,7 @@ mod parse_json_test {
 
         assert_eq!(domains[0].domain, "example.com");
         assert_eq!(domains[1].domain, "test.com");
-        assert_eq!(domains[1].directive[1], "img-src");
+        assert_eq!(domains[1].directives[1], "img-src");
     }
 
     #[test]

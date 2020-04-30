@@ -16,6 +16,10 @@ impl ToJson for Collection {
 
         for item in self {
             json.push_str(serde_json::to_string(&item).unwrap().as_str());
+
+            if item.domain != self.last().unwrap().domain {
+                json.push_str(",");
+            }
         }
 
         json.push_str("]");
@@ -64,7 +68,7 @@ mod item_test {
     fn test_to_json() {
         let directives: Vec<String> = vec![String::from("connect-src"), String::from("script-src")];
 
-        let item = super::Item {
+        let item = Item {
             domain: String::from("*.example.com"),
             directives,
         };
@@ -75,6 +79,33 @@ mod item_test {
         assert_eq!(
             domains.to_json(),
             r#"[{"domain":"*.example.com","directives":["connect-src","script-src"]}]"#
+        );
+    }
+
+    #[test]
+    fn test_to_json_two_domains() {
+        let directives_one: Vec<String> =
+            vec![String::from("connect-src"), String::from("script-src")];
+        let directives_two: Vec<String> =
+            vec![String::from("connect-src"), String::from("script-src")];
+
+        let item_one = Item {
+            domain: String::from("*.example.com"),
+            directives: directives_one,
+        };
+
+        let item_two = Item {
+            domain: String::from("*.test.com"),
+            directives: directives_two,
+        };
+
+        let mut domains: Collection = Collection::new();
+        domains.push(item_one);
+        domains.push(item_two);
+
+        assert_eq!(
+            domains.to_json(),
+            r#"[{"domain":"*.example.com","directives":["connect-src","script-src"]},{"domain":"*.test.com","directives":["connect-src","script-src"]}]"#
         );
     }
 }

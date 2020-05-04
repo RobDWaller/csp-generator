@@ -4,7 +4,7 @@ pub mod domains;
 mod parse;
 
 use directives::GetDirectives;
-use csp::build;
+use csp::generate;
 use serde_json::error;
 
 pub struct Csp {
@@ -22,21 +22,21 @@ fn parse_csp_result(header: String, result: Result<String, error::Error>) -> Csp
 pub fn enforce(directives: impl GetDirectives, json: &str) -> Csp {
     parse_csp_result(
         "Content-Security-Policy".to_string(),
-        build(directives, json),
+        generate(directives, json),
     )
 }
 
 pub fn report_only(directives: impl GetDirectives, json: &str) -> Csp {
     parse_csp_result(
         "Content-Security-Policy-Report-Only".to_string(),
-        build(directives, json),
+        generate(directives, json),
     )
 }
 
 pub fn csp_only(directives: impl GetDirectives, json: &str) -> String {
     parse_csp_result(
         "Content-Security-Policy".to_string(),
-        build(directives, json),
+        generate(directives, json),
     )
     .csp
 }

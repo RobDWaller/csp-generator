@@ -17,7 +17,7 @@ fn threads_to_directives(threads: Vec<JoinHandle<String>>) -> String {
     directives.trim().to_string()
 }
 
-pub fn build(directives_list: impl GetDirectives, json: &str) -> Result<String, error::Error> {
+pub fn generate(directives_list: impl GetDirectives, json: &str) -> Result<String, error::Error> {
     let domains: Result<domains::Collection, error::Error> = parse::json(json);
 
     match domains {
@@ -48,7 +48,7 @@ mod directives_test {
             ]
         "#;
 
-        let csp: Result<String, error::Error> = super::build(directives::directives(), json);
+        let csp: Result<String, error::Error> = super::generate(directives::directives(), json);
 
         assert_eq!(
             csp.unwrap(),

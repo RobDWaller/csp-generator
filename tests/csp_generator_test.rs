@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod csp_generator_test {
     extern crate csp_generator;
-    use csp_generator::config;
+    use csp_generator::directives;
 
     #[test]
     fn test_enforce() {
@@ -12,7 +12,7 @@ mod csp_generator_test {
             ]
         "#;
 
-        let csp: csp_generator::Csp = csp_generator::enforce(config::get_directives(), json);
+        let csp: csp_generator::Csp = csp_generator::enforce(directives::directives(), json);
 
         assert_eq!(csp.header, String::from("Content-Security-Policy"));
         assert_eq!(
@@ -26,7 +26,7 @@ mod csp_generator_test {
     fn test_enforce_empty_fail() {
         let json = "";
 
-        csp_generator::enforce(config::get_directives(), json);
+        csp_generator::enforce(directives::directives(), json);
     }
 
     #[test]
@@ -39,7 +39,7 @@ mod csp_generator_test {
             ]
         "#;
 
-        csp_generator::enforce(config::get_directives(), json);
+        csp_generator::enforce(directives::directives(), json);
     }
 
     #[test]
@@ -51,7 +51,7 @@ mod csp_generator_test {
             ]
         "#;
 
-        let csp: csp_generator::Csp = csp_generator::report_only(config::get_directives(), json);
+        let csp: csp_generator::Csp = csp_generator::report_only(directives::directives(), json);
 
         assert_eq!(
             csp.header,
@@ -68,7 +68,7 @@ mod csp_generator_test {
     fn test_report_only_empty_fail() {
         let json = "";
 
-        csp_generator::report_only(config::get_directives(), json);
+        csp_generator::report_only(directives::directives(), json);
     }
 
     #[test]
@@ -81,7 +81,7 @@ mod csp_generator_test {
             ]
         "#;
 
-        csp_generator::report_only(config::get_directives(), json);
+        csp_generator::report_only(directives::directives(), json);
     }
 
     #[test]
@@ -93,7 +93,7 @@ mod csp_generator_test {
             ]
         "#;
 
-        let csp: String = csp_generator::csp_only(config::get_directives(), json);
+        let csp: String = csp_generator::csp_only(directives::directives(), json);
 
         assert_eq!(
             csp,

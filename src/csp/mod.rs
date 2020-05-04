@@ -1,6 +1,6 @@
 use crate::domains;
 use crate::parse;
-use crate::GetDirectives;
+use crate::directives::GetDirectives;
 use serde_json::error;
 use std::thread::JoinHandle;
 
@@ -36,7 +36,7 @@ pub fn build(directives_list: impl GetDirectives, json: &str) -> Result<String, 
 // -----
 #[cfg(test)]
 mod directives_test {
-    use crate::config;
+    use crate::directives;
     use serde_json::error;
 
     #[test]
@@ -48,7 +48,7 @@ mod directives_test {
             ]
         "#;
 
-        let csp: Result<String, error::Error> = super::build(config::get_directives(), json);
+        let csp: Result<String, error::Error> = super::build(directives::directives(), json);
 
         assert_eq!(
             csp.unwrap(),

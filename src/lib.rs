@@ -1,29 +1,23 @@
+mod csp;
+pub mod directives;
+pub mod domains;
+mod parse;
+
+use directives::GetDirectives;
+use csp::build;
 use serde_json::error;
 
 #[macro_use]
 extern crate serde_derive;
-
-pub mod config;
-mod directives;
-pub mod domains;
-mod parse;
 
 pub struct Csp {
     pub header: String,
     pub csp: String,
 }
 
-pub trait GetDirectives {
-    fn get_directives(&self) -> Vec<String>;
-}
-
-fn generate_csp(header: String, csp: String) -> Csp {
-    Csp { header, csp }
-}
-
 fn parse_csp_result(header: String, result: Result<String, error::Error>) -> Csp {
     match result {
-        Ok(result) => generate_csp(header, result),
+        Ok(result) => Csp { header, csp: result },
         Err(e) => panic!("Could not parse JSON: {}", e),
     }
 }
@@ -31,21 +25,21 @@ fn parse_csp_result(header: String, result: Result<String, error::Error>) -> Csp
 pub fn enforce(directives: impl GetDirectives, json: &str) -> Csp {
     parse_csp_result(
         "Content-Security-Policy".to_string(),
-        directives::build(directives, json),
+        build(directives, json),
     )
 }
 
 pub fn report_only(directives: impl GetDirectives, json: &str) -> Csp {
     parse_csp_result(
         "Content-Security-Policy-Report-Only".to_string(),
-        directives::build(directives, json),
+        build(directives, json),
     )
 }
 
 pub fn csp_only(directives: impl GetDirectives, json: &str) -> String {
     parse_csp_result(
         "Content-Security-Policy".to_string(),
-        directives::build(directives, json),
+        build(directives, json),
     )
     .csp
 }
@@ -64,14 +58,6 @@ mod csp_generator_test {
 
         assert_eq!(csp.header, String::from("header"));
         assert_eq!(csp.csp, String::from("csp"));
-    }
-
-    #[test]
-    fn test_generate_csp() {
-        let csp = super::generate_csp(String::from("my header"), String::from("my csp"));
-
-        assert_eq!(csp.header, String::from("my header"));
-        assert_eq!(csp.csp, String::from("my csp"));
     }
 
     #[test]

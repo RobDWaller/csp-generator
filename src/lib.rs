@@ -30,21 +30,21 @@ fn parse_csp_result(header: String, result: Result<String, error::Error>) -> Csp
 
 pub fn enforce(directives: impl GetDirectives, json: &str) -> Csp {
     parse_csp_result(
-        String::from("Content-Security-Policy"),
+        "Content-Security-Policy".to_string(),
         directives::build(directives, json),
     )
 }
 
 pub fn report_only(directives: impl GetDirectives, json: &str) -> Csp {
     parse_csp_result(
-        String::from("Content-Security-Policy-Report-Only"),
+        "Content-Security-Policy-Report-Only".to_string(),
         directives::build(directives, json),
     )
 }
 
 pub fn csp_only(directives: impl GetDirectives, json: &str) -> String {
     parse_csp_result(
-        String::from("Content-Security-Policy"),
+        "Content-Security-Policy".to_string(),
         directives::build(directives, json),
     )
     .csp

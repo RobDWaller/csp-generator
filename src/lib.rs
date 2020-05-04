@@ -7,9 +7,6 @@ use directives::GetDirectives;
 use csp::build;
 use serde_json::error;
 
-#[macro_use]
-extern crate serde_derive;
-
 pub struct Csp {
     pub header: String,
     pub csp: String,

@@ -1,7 +1,9 @@
-use crate::GetDirectives;
-
 pub struct Directives {
     list: Vec<String>,
+}
+
+pub trait GetDirectives {
+    fn get_directives(&self) -> Vec<String>;
 }
 
 impl GetDirectives for Directives {
@@ -10,7 +12,8 @@ impl GetDirectives for Directives {
     }
 }
 
-pub fn get_directives() -> Directives {
+// Named constructor for directives module.
+pub fn directives() -> Directives {
     Directives {
         list: vec![
             String::from("default-src"),
@@ -42,7 +45,7 @@ mod config_test {
 
     #[test]
     fn test_get_directives() {
-        let config: super::Directives = super::get_directives();
+        let config: super::Directives = super::directives();
 
         assert_eq!(config.get_directives()[0], String::from("default-src"));
         assert_eq!(config.get_directives()[9], String::from("sandbox"));

@@ -1,6 +1,6 @@
+use crate::directives::GetDirectives;
 use crate::domains;
 use crate::parse;
-use crate::directives::GetDirectives;
 use serde_json::error;
 use std::thread::JoinHandle;
 

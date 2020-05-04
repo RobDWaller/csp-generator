@@ -3,8 +3,8 @@ pub mod directives;
 pub mod domains;
 mod parse;
 
-use directives::GetDirectives;
 use csp::generate;
+use directives::GetDirectives;
 use serde_json::error;
 
 pub struct Csp {
@@ -14,7 +14,10 @@ pub struct Csp {
 
 fn parse_csp_result(header: String, result: Result<String, error::Error>) -> Csp {
     match result {
-        Ok(result) => Csp { header, csp: result },
+        Ok(result) => Csp {
+            header,
+            csp: result,
+        },
         Err(e) => panic!("Could not parse JSON: {}", e),
     }
 }

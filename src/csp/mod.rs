@@ -1,3 +1,7 @@
+// The core module for parsing the JSON config and generating the Content 
+// Security Policy.
+//
+// ToDo: Uses Threads, this may be overkill.
 use crate::directives::GetDirectives;
 use crate::domains;
 use crate::parse;
@@ -7,16 +11,18 @@ use std::thread::JoinHandle;
 mod line;
 mod threads;
 
-fn threads_to_directives(threads: Vec<JoinHandle<String>>) -> String {
-    let mut directives: String = String::new();
+// Collect the generated directives and compile them into a CSP string.
+fn directives_to_csp(directives: Vec<JoinHandle<String>>) -> String {
+    let mut csp: String = String::new();
 
-    for thread in threads {
-        directives.push_str(thread.join().unwrap().as_str());
+    for directive in directives {
+        csp.push_str(directive.join().unwrap().as_str());
     }
 
-    directives.trim().to_string()
+    csp.trim().to_string()
 }
 
+// Parse the JSON config and generate the Content Security Policy.
 pub fn generate(directives_list: impl GetDirectives, json: &str) -> Result<String, error::Error> {
     let domains: Result<domains::Collection, error::Error> = parse::json(json);
 
@@ -25,7 +31,7 @@ pub fn generate(directives_list: impl GetDirectives, json: &str) -> Result<Strin
             let threads: Vec<JoinHandle<String>> =
                 threads::build_lines(directives_list.get_directives(), domains);
 
-            Ok(threads_to_directives(threads))
+            Ok(directives_to_csp(threads))
         }
         Err(e) => Err(e),
     }
@@ -35,7 +41,7 @@ pub fn generate(directives_list: impl GetDirectives, json: &str) -> Result<Strin
 // Tests
 // -----
 #[cfg(test)]
-mod directives_test {
+mod csp_test {
     use crate::directives;
     use serde_json::error;
 

@@ -18,7 +18,7 @@ To install csp_generator in your Rust project simply add it as a dependency with
 **Example Cargo.toml**
 ```toml
 [dependencies]
-csp_generator = "0.1.0-beta"
+csp_generator = "0.2.0-beta.3"
 ```
 
 ## Usage
@@ -38,8 +38,7 @@ Each of the methods accepts two arguments a list of CSP directives you wish to u
 **Example Code**
 
 ```rust
-extern crate csp_generator;
-use csp_generator::config;
+use csp_generator::directives;
 
 let json = r#"
     [
@@ -48,7 +47,7 @@ let json = r#"
     ]
 "#;
 
-let csp: String = csp_generator::enforce(config::get_directives(), json);
+let csp: String = csp_generator::enforce(directives::get_directives(), json);
 
 println!("This is the CSP Header: {}", csp.header);
 // This is the CSP Header: Content-Security-Policy
@@ -63,8 +62,7 @@ This library relies on a specific JSON format. This is an array of objects which
 **Format**
 ```js
 [
-    "domain": string,
-    "directive": array<string>
+    {"domain": string, "directive": array<string>}
 ]
 ```
 
@@ -84,7 +82,7 @@ Along with supplying a list of domains and directives in JSON format, we also ne
 
 You can use the built CSP directives list config, as it contains a list of all the standard CSP directives. But if you wish to override this you can.
 
-You just need to comply with the `csp_generator::GetDirectives` trait (interface).
+You just need to comply with the `csp_generator::directives::GetDirectives` trait (interface).
 
 **Example Override**
 This override will generate a CSP directive string which only makes use of the script-src and connect-src. 
@@ -102,8 +100,9 @@ impl GetDirectives for MyDirectives {
     }
 }
 
-pub fn get_directives() -> Directives {
-    Directives {
+// Construct MyDirectives Struct with the directives you wish to use.
+pub fn my_directives() -> Directives {
+    MyDirectives {
         list: vec![
             String::from("script-src"),
             String::from("connect-src"),

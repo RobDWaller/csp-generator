@@ -13,10 +13,10 @@ pub trait ToJson {
     fn to_json(&self) -> String;
 }
 
-// Parse the collection of domain and directive items back to the original 
+// Parse the collection of domain and directive items back to the original
 // JSON config.
 //
-// ToDo: Look into implementing the serde serialization trait rather than using 
+// ToDo: Look into implementing the serde serialization trait rather than using
 // this clunky approach which is probably wrong.
 impl ToJson for Collection {
     fn to_json(&self) -> String {

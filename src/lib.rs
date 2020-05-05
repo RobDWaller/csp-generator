@@ -1,5 +1,5 @@
 // Generate a Content Security Policy based on simple to define JSON config.
-// This library will generate a CSP and return the correct header required to 
+// This library will generate a CSP and return the correct header required to
 // run the CSP in either enforcement mode or report-only mode.
 //
 // Note: Enforcement mode will block content and requests so please test your

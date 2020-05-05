@@ -1,4 +1,4 @@
-// The core module for parsing the JSON config and generating the Content 
+// The core module for parsing the JSON config and generating the Content
 // Security Policy.
 //
 // ToDo: Uses Threads, this may be overkill.

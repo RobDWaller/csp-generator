@@ -1,6 +1,7 @@
 use crate::domains::Collection;
 use serde_json::error;
 
+// Parse the supplied CSP JSON config to a collection of domains and directives.
 pub fn json(json: &str) -> Result<Collection, error::Error> {
     let result = serde_json::from_str(json);
 

@@ -1,7 +1,15 @@
+// Directives config maintains the list of valid Content Security Policy 
+// directives which can be used with this library by default. This can be
+// overwritten using the supplied GetDirectives trait if required.
+//
+// See: https://content-security-policy.com/
+
 pub struct Directives {
     list: Vec<String>,
 }
 
+// Trait / Interface allows this directives config to be overwritten with custom 
+// setup if required.
 pub trait GetDirectives {
     fn get_directives(&self) -> Vec<String>;
 }
@@ -12,7 +20,8 @@ impl GetDirectives for Directives {
     }
 }
 
-// Named constructor for directives module.
+// Named constructor for directives module, injects the valid CSP directives 
+// into the Directives struct.
 pub fn directives() -> Directives {
     Directives {
         list: vec![
@@ -39,6 +48,9 @@ pub fn directives() -> Directives {
     }
 }
 
+// -----
+// Tests
+// -----
 #[cfg(test)]
 mod config_test {
     use super::GetDirectives;

@@ -40,7 +40,7 @@ impl ToJson for Collection {
 // Tests
 // -----
 #[cfg(test)]
-mod item_test {
+mod domains_test {
     use super::{Collection, Item, ToJson};
 
     #[test]

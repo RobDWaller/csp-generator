@@ -52,7 +52,7 @@ pub fn directives() -> Directives {
 // Tests
 // -----
 #[cfg(test)]
-mod config_test {
+mod directives_test {
     use super::GetDirectives;
 
     #[test]

@@ -1,3 +1,5 @@
+use serde_derive::{Deserialize, Serialize};
+
 #[derive(Deserialize, Serialize, Clone)]
 pub struct Item {
     pub domain: String,

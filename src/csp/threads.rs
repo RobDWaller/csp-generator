@@ -1,4 +1,4 @@
-use crate::directives::line;
+use crate::csp::line;
 use crate::domains::Collection;
 use std::thread;
 use std::thread::JoinHandle;

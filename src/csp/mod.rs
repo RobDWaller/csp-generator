@@ -36,9 +36,9 @@ fn make_directives(directives_config: Vec<String>, domains: Collection) -> Vec<J
     for directive_item in directives_config {
         let domains_clone = domains.clone();
 
-        directives.push(
-            thread::spawn(move || directive::generate(directive_item, domains_clone))
-        );
+        directives.push(thread::spawn(move || {
+            directive::generate(directive_item, domains_clone)
+        }));
     }
 
     directives

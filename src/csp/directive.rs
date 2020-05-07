@@ -1,9 +1,9 @@
-use crate::domains::{Collection};
 use crate::csp::domains;
+use crate::domains::Collection;
 
 // Make an individual CSP directive.
-fn make(directive: &str, domains: &Vec<String>) -> String {
-    let mut directive_line = String::new(); 
+fn make(directive: &str, domains: &[String]) -> String {
+    let mut directive_line = String::new();
     directive_line.push_str(directive);
     directive_line.push_str(" ");
 

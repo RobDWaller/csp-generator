@@ -1,7 +1,7 @@
-use crate::domains::{Collection};
+use crate::domains::Item;
 
 // Find the domains associated with the CSP directive
-pub fn find(directive: &str, domains: &Collection) -> Vec<String> {
+pub fn find(directive: &str, domains: &[Item]) -> Vec<String> {
     let mut domains_found: Vec<String> = vec![];
 
     for domain in domains {
@@ -13,15 +13,23 @@ pub fn find(directive: &str, domains: &Collection) -> Vec<String> {
     domains_found
 }
 
+// -----
+// Tests
+// -----
 #[cfg(test)]
 mod domains_test {
     use crate::domains::{Collection, Item};
 
     #[test]
-    fn test_find()
-    {
-        let item1 = Item {domain: "foo".to_string(), directives: vec!["img-src".to_string()]};
-        let item2 = Item {domain: "bar".to_string(), directives: vec!["img-src".to_string()]};
+    fn test_find() {
+        let item1 = Item {
+            domain: "foo".to_string(),
+            directives: vec!["img-src".to_string()],
+        };
+        let item2 = Item {
+            domain: "bar".to_string(),
+            directives: vec!["img-src".to_string()],
+        };
 
         let domains: Collection = vec![item1, item2];
 
@@ -35,10 +43,15 @@ mod domains_test {
     }
 
     #[test]
-    fn test_find_one()
-    {
-        let item1 = Item {domain: "foo".to_string(), directives: vec!["script-src".to_string()]};
-        let item2 = Item {domain: "bar".to_string(), directives: vec!["img-src".to_string()]};
+    fn test_find_one() {
+        let item1 = Item {
+            domain: "foo".to_string(),
+            directives: vec!["script-src".to_string()],
+        };
+        let item2 = Item {
+            domain: "bar".to_string(),
+            directives: vec!["img-src".to_string()],
+        };
 
         let domains: Collection = vec![item1, item2];
 
@@ -51,10 +64,15 @@ mod domains_test {
     }
 
     #[test]
-    fn test_find_none()
-    {
-        let item1 = Item {domain: "foo".to_string(), directives: vec!["script-src".to_string()]};
-        let item2 = Item {domain: "bar".to_string(), directives: vec!["img-src".to_string()]};
+    fn test_find_none() {
+        let item1 = Item {
+            domain: "foo".to_string(),
+            directives: vec!["script-src".to_string()],
+        };
+        let item2 = Item {
+            domain: "bar".to_string(),
+            directives: vec!["img-src".to_string()],
+        };
 
         let domains: Collection = vec![item1, item2];
 

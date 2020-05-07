@@ -2,36 +2,42 @@
 // Security Policy.
 //
 // ToDo: Uses Threads, this may be overkill.
+mod directive;
+mod directives;
+mod domains;
+
 use crate::directives::GetDirectives;
-use crate::domains;
+use crate::domains::Collection;
 use crate::parse;
 use serde_json::error;
 use std::thread::JoinHandle;
-
-mod line;
-mod threads;
 
 // Collect the generated directives and compile them into a CSP string.
 fn directives_to_csp(directives: Vec<JoinHandle<String>>) -> String {
     let mut csp: String = String::new();
 
     for directive in directives {
-        csp.push_str(directive.join().unwrap().as_str());
+        let directive_string = directive.join().unwrap();
+        
+        if !directive_string.is_empty() {
+            csp.push_str(directive_string.as_str());
+            csp.push_str(" ");
+        }
     }
 
     csp.trim().to_string()
 }
 
 // Parse the JSON config and generate the Content Security Policy.
-pub fn generate(directives_list: impl GetDirectives, json: &str) -> Result<String, error::Error> {
-    let domains: Result<domains::Collection, error::Error> = parse::json(json);
+pub fn generate(directives_config: impl GetDirectives, json: &str) -> Result<String, error::Error> {
+    let domains: Result<Collection, error::Error> = parse::json(json);
 
     match domains {
         Ok(domains) => {
-            let threads: Vec<JoinHandle<String>> =
-                threads::build_lines(directives_list.get_directives(), domains);
+            let directives: Vec<JoinHandle<String>> =
+                directives::generate(directives_config.get_directives(), domains);
 
-            Ok(directives_to_csp(threads))
+            Ok(directives_to_csp(directives))
         }
         Err(e) => Err(e),
     }

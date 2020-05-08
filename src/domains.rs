@@ -1,5 +1,6 @@
 use serde_derive::{Deserialize, Serialize};
 
+// Core config struct, each domain is associated with a number of CSP directives.
 #[derive(Deserialize, Serialize, Clone)]
 pub struct Item {
     pub domain: String,
@@ -12,6 +13,11 @@ pub trait ToJson {
     fn to_json(&self) -> String;
 }
 
+// Parse the collection of domain and directive items back to the original
+// JSON config.
+//
+// ToDo: Look into implementing the serde serialization trait rather than using
+// this clunky approach which is probably wrong.
 impl ToJson for Collection {
     fn to_json(&self) -> String {
         let mut json = "[".to_string();
@@ -34,7 +40,7 @@ impl ToJson for Collection {
 // Tests
 // -----
 #[cfg(test)]
-mod item_test {
+mod domains_test {
     use super::{Collection, Item, ToJson};
 
     #[test]

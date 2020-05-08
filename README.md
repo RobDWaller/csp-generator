@@ -38,21 +38,23 @@ Each of the methods accepts two arguments a list of CSP directives you wish to u
 **Example Code**
 
 ```rust
-use csp_generator::directives;
+use csp_generator::{directives, Csp};
 
-let json = r#"
+fn main() {
+    let json = r#"
     [
-        {"domain": "example.com", "directive": ["connect-src"]},
-        {"domain": "test.com", "directive": ["connect-src", "script-src"]}
+        {"domain": "example.com", "directives": ["connect-src"]},
+        {"domain": "test.com", "directives": ["connect-src", "script-src"]}
     ]
-"#;
+    "#;
 
-let csp: String = csp_generator::enforce(directives::get_directives(), json);
+    let csp: Csp = csp_generator::enforce(directives::directives(), json);
 
-println!("This is the CSP Header: {}", csp.header);
-// This is the CSP Header: Content-Security-Policy
-println!("This is the CSP Directives String: {}", csp.csp);
-// This is the CSP Directives String: script-src test.com; connect-src example.com test.com;
+    println!("This is the CSP Header: {}", csp.header);
+    // This is the CSP Header: Content-Security-Policy
+    println!("This is the CSP Directives String: {}", csp.csp);
+    // This is the CSP Directives String: script-src test.com; connect-src example.com test.com;
+}
 ```
 
 ## JSON Configuration
@@ -88,7 +90,8 @@ You just need to comply with the `csp_generator::directives::GetDirectives` trai
 This override will generate a CSP directive string which only makes use of the script-src and connect-src. 
 
 ```rust
-use crate::GetDirectives;
+use csp_generator::directives::GetDirectives;
+use csp_generator::Csp;
 
 pub struct MyDirectives {
     list: Vec<String>,
@@ -101,13 +104,29 @@ impl GetDirectives for MyDirectives {
 }
 
 // Construct MyDirectives Struct with the directives you wish to use.
-pub fn my_directives() -> Directives {
+fn my_directives() -> MyDirectives {
     MyDirectives {
         list: vec![
             String::from("script-src"),
             String::from("connect-src"),
         ],
     }
+}
+
+pub fn main() {
+    let json = r#"
+    [
+        {"domain": "example.com", "directives": ["connect-src"]},
+        {"domain": "test.com", "directives": ["connect-src", "img-src"]}
+    ]
+    "#;
+
+    let csp: Csp = csp_generator::report_only(my_directives(), json);
+
+    println!("This is the CSP Header: {}", csp.header);
+    // This is the CSP Header: Content-Security-Policy-Report-Only
+    println!("This is the CSP Directives String: {}", csp.csp);
+    // This is the CSP Directives String: connect-src example.com test.com;
 }
 ```
 
